@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Trainers Homepage</title>
+  </head>
+  <body>
+    <h1>Your Trainers</h1>
+    <button command="show-modal" commandfor="add-new-trainer-dialog">Create New Trainer</button>
+    <dialog id="add-new-trainer-dialog">
+      <button commandfor="add-new-trainer-dialog" command="close">Close</button>
+      <p>Add a new Trainer</p>
+      <form action="/trainer/new" method="POST">
+        <label for="trainer-name">Name: </label>
+        <input type="text" id="trainer-name" name="trainer_name">
+        <br>
+        <label for="character-type">Choose a character:</label> 
+        <select name="character_type" id="character-type">
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+        <br>
+        <button type="submit">Submit</button>
+      </form>
+    </dialog>
+    <div class="trainer-card-container">
+      <% results.map(result => { %>
+        <div class="card">  
+          <p><strong>Trainer ID</strong>: <%= result.id %></p>
+          <p>Name: <%= result.name %></p>
+          <p>Gender: <%= result.character_type %></p>
+          <p>Gym Badges: <%= result.no_gym_badges %></p>
+          <a href="/trainer/<%= result.id %>/update">Update</a>
+          <a href="/pokemon/from/<%= result.id %>">Show Pokemon</a>
+          <button command="show-modal" commandfor="delete-trainer-<%= result.id %>-dialog">Delete</button>
+          <dialog id="delete-trainer-<%= result.id %>-dialog">
+            <button commandfor="delete-trainer-<%= result.id %>-dialog" command="close">Close</button>
+            <form action="/trainer/<%= result.id %>/delete" method="POST">
+              <p>Are you sure you want to delete this trainer <%= result.id %>?</p>
+              <button type="submit">Confirm</button>
+            </form>
+          </dialog>
+        </div>
+      <% }) %>
+    </div>
+  </body>
+</html>

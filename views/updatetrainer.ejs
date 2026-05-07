@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Update Trainer Details</title>
+  </head>
+  <body>
+    <form action="/trainer/<%= id %>/update" method="POST">
+      <label for="trainer-name">Name: </label>
+      <input type="text" id="trainer-name" name="trainer_name" value="<%= name %>">
+      <br>
+      <label for="character-type">Choose a character:</label> 
+      <select name="character_type" id="character-type">
+        <% if(character_type == "male") { %>
+        <option value="male" selected>Male</option>
+        <option value="female">Female</option>
+        <%}else {%>
+        <option value="male">Male</option>
+        <option value="female" selected>Female</option>
+        <% } %>
+      </select>
+      <br>
+      <button type="submit">Submit</button>
+    </form> 
+  </body>
+</html>

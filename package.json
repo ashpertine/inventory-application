@@ -1,0 +1,29 @@
+{
+  "name": "inventory-application",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "initDb": "node --env-file=.env db/populateDb.js",
+    "dev": "node --watch --env-file=.env app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ashpertine/inventory-application.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ashpertine/inventory-application/issues"
+  },
+  "homepage": "https://github.com/ashpertine/inventory-application#readme",
+  "dependencies": {
+    "ejs": "^5.0.2",
+    "express": "^5.2.1",
+    "express-validator": "^7.3.2",
+    "pg": "^8.20.0"
+  }
+}
