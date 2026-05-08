@@ -25,7 +25,6 @@ async function updateTrainerView(req, res) {
     const trainerId = req.params.id;
     const results = await trainerQueries.getTrainerById(trainerId);
     const trainerInfo = results[0];
-    console.log(trainerInfo);
     res.render("updatetrainer", trainerInfo);
   } catch (error) {
     res.status(500).json(error);

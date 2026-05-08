@@ -1,9 +1,27 @@
 import { inventoryPool } from "./pool.js";
 
 async function getAllPokemon() {
-  const SQL = "SELECT * FROM pokemon";
+  const SQL = ` SELECT pokemon.id as pokemon_id, pokemon.name, attack, defense, type.name AS type_name FROM pokemon 
+                INNER JOIN type
+                ON pokemon.type_id = type.id`;
   const { rows } = await inventoryPool.query(SQL);
   return rows;
+}
+
+async function getPokemonById(pokemon_id) {
+  const SQL = ` SELECT pokemon.id as pokemon_id, pokemon.name, attack, defense, type.name AS type_name FROM pokemon 
+                INNER JOIN type
+                ON pokemon.type_id = type.id
+                WHERE pokemon.id = $1`;
+  const { rows } = await inventoryPool.query(SQL, [pokemon_id]);
+  return rows;
+}
+
+async function getOwnerIdByPokemonId(pokemon_id) {
+  const SQL = `SELECT trainer_id FROM pokemon WHERE id = $1`;
+  const { rows } = await inventoryPool.query(SQL, [pokemon_id]);
+  const trainerId = rows[0].trainer_id;
+  return trainerId;
 }
 
 async function getAllPokemonByTrainerId(trainer_id) {
@@ -48,16 +66,25 @@ async function updatePokemonById(
     [type_name],
   );
 
-  const typeId = typeResults.rows[0];
+  const typeId = typeResults.rows[0].id;
   const SQL =
-    "UPDATE pokemon SET name = $1, attack = $2, defense = $3, type_name = $4 WHERE id = $5";
+    "UPDATE pokemon SET name = $1, attack = $2, defense = $3, type_id = $4 WHERE id = $5";
   await inventoryPool.query(SQL, [
     new_name,
     attack,
     defense,
-    type_name,
+    typeId,
     pokemon_id,
   ]);
+}
+
+async function getPokemonWithNoTrainer() {
+  const SQL = ` SELECT pokemon.id as pokemon_id, pokemon.name, attack, defense, type.name AS type_name FROM pokemon 
+                INNER JOIN type
+                ON pokemon.type_id = type.id
+                WHERE trainer_id IS NULL`;
+  const { rows } = await inventoryPool.query(SQL);
+  return rows;
 }
 
 async function deletePokemonById(pokemon_id) {
@@ -65,10 +92,20 @@ async function deletePokemonById(pokemon_id) {
   await inventoryPool.query(SQL, [pokemon_id]);
 }
 
+async function getAllTypes() {
+  const SQL = "SELECT * FROM type";
+  const { rows } = await inventoryPool.query(SQL);
+  return rows;
+}
+
 export default {
   getAllPokemon,
+  getPokemonById,
+  getOwnerIdByPokemonId,
   getAllPokemonByTrainerId,
   insertNewPokemon,
   updatePokemonById,
+  getPokemonWithNoTrainer,
   deletePokemonById,
+  getAllTypes,
 };

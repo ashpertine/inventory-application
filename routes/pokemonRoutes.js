@@ -7,7 +7,13 @@ pokemonRouter.get(
   "/from/:trainerId",
   pokemonController.getAllPokemonByTrainerIdView,
 );
+pokemonRouter.get("/wild", pokemonController.wildPokemonView);
 pokemonRouter.post("/new", pokemonController.insertNewPokemonPost);
 pokemonRouter.post("/:pokemonId/delete", pokemonController.deletePokemonPost);
+pokemonRouter.get("/:pokemonId/update", pokemonController.updatePokemonView);
+pokemonRouter.post(
+  "/:pokemonId/update",
+  pokemonController.updatePokemonDetailsPost,
+);
 
 export { pokemonRouter };
