@@ -87,6 +87,11 @@ async function getPokemonWithNoTrainer() {
   return rows;
 }
 
+async function updatePokemonOwner(new_trainer_id, pokemon_id) {
+  const SQL = `UPDATE pokemon SET trainer_id = $1 WHERE id = $2`;
+  await inventoryPool.query(SQL, [new_trainer_id, pokemon_id]);
+}
+
 async function deletePokemonById(pokemon_id) {
   const SQL = "DELETE FROM pokemon WHERE id =  $1";
   await inventoryPool.query(SQL, [pokemon_id]);
@@ -106,6 +111,7 @@ export default {
   insertNewPokemon,
   updatePokemonById,
   getPokemonWithNoTrainer,
+  updatePokemonOwner,
   deletePokemonById,
   getAllTypes,
 };

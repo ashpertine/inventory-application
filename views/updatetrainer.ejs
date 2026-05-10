@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Update Trainer Details</title>
+    <link rel="stylesheet" href="/updatetrainer.css">
   </head>
   <body>
     <form action="/trainer/<%= id %>/update" method="POST">
       <label for="trainer-name">Name: </label>
-      <input type="text" id="trainer-name" name="trainer_name" value="<%= name %>">
+      <input type="text" id="trainer-name" name="trainer_name" value="<%= name %>" maxlength="12">
       <br>
       <label for="character-type">Choose a character:</label> 
       <select name="character_type" id="character-type">

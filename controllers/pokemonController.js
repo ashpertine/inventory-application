@@ -66,7 +66,7 @@ async function updatePokemonDetailsPost(req, res) {
         defense,
         pokemonTypeName,
       );
-      res.status(200).redirect(`/trainer`);
+      res.status(200).redirect(`/pokemon/wild`);
     } else {
       await pokemonQueries.updatePokemonById(
         pokemonId,
@@ -85,7 +85,8 @@ async function updatePokemonDetailsPost(req, res) {
 async function wildPokemonView(req, res) {
   try {
     const wildPokemon = await pokemonQueries.getPokemonWithNoTrainer();
-    return res.render("wildpokemon", { wildPokemon });
+    const trainerIdForCatch = req.query.catch || null;
+    return res.render("wildpokemon", { wildPokemon, trainerIdForCatch });
   } catch (error) {
     res.status(500).json(error);
   }
@@ -107,6 +108,17 @@ async function deletePokemonPost(req, res) {
   }
 }
 
+async function updatePokemonOwnerPost(req, res) {
+  const pokemonId = req.params.pokemonId;
+  const trainerId = req.params.trainerId;
+  try {
+    await pokemonQueries.updatePokemonOwner(trainerId, pokemonId);
+    return res.redirect(`/pokemon/from/${trainerId}`);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+}
+
 export default {
   getAllPokemonByTrainerIdView,
   insertNewPokemonPost,
@@ -114,4 +126,5 @@ export default {
   updatePokemonDetailsPost,
   wildPokemonView,
   deletePokemonPost,
+  updatePokemonOwnerPost,
 };

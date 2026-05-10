@@ -1,0 +1,109 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&display=swap');
+
+body {
+  overflow-y: hidden;
+  padding: 12px;
+  min-height: 100vh;
+  background: no-repeat url("/pokemonbg.png");
+  background-size: cover;
+}
+html {
+  font-family: "Fredoka",-apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, Adwaita Sans, Cantarell, Ubuntu, roboto, noto, helvetica, arial, sans-serif;
+  font-weight: 400;
+}
+
+h1 {
+  color: #fff;
+  font-weight: 500;
+  font-size: 3rem;
+}
+
+strong {
+  font-size: 1.4rem;
+}
+
+button {
+  user-select: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 0.5px 1px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  font-family: "Fredoka",-apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, Adwaita Sans, Cantarell, Ubuntu, roboto, noto, helvetica, arial, sans-serif;
+  background-color: #34D2E3;
+  font-size: 0.8rem;
+  text-transform: uppercase; 
+  padding: 8px 16px;
+  border-radius: 0.2em;
+  border: none
+}
+
+button:hover {
+  background-color: #63DCEB;
+  cursor: pointer;
+}
+
+a:link,
+a:active,
+a:visited {
+  user-select: none;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 0.5px 1px rgba(0,0,0,0.24);
+  transition: all 0.3s cubic-bezier(.25,.8,.25,1);
+  padding: 8px 16px;
+  font-size: 0.8rem;
+  background-color: #34D2E3;
+  text-decoration: none; 
+  border-radius: 0.2em;
+  color: black;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+a:hover {
+  background-color: #63DCEB;
+}
+
+.trainer-card-container { 
+  max-height: 80vh;
+  overflow-y: scroll;
+  margin-top: 24px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.trainer-card-container .card {
+  background-color: #C2EDDB;
+  padding: 12px 16px;
+  border-radius: 0.2rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 0.5px 1px rgba(0,0,0,0.24);
+}
+
+.info-container {
+  display: flex;
+}
+
+.buttons-container {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.info-container > .stats-container {
+  flex: 1;
+}
+
+.character-img-container img {
+  width: 8rem;
+}
+
+dialog {
+  background-color: #C2EDDB;
+  border: none;
+  border-radius: 0.4rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 0.5px 1px rgba(0,0,0,0.24);
+}
+
+
+
+
+
+
+

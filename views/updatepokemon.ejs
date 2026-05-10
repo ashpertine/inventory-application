@@ -4,11 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Update Pokemon Details</title>
+    <link rel="stylesheet" href="/updatepokemon.css">
   </head>
   <body>   
     <form action="/pokemon/<%= pokemonInfo.pokemon_id %>/update" method="POST">
       <label for="pokemon-name">Pokemon Name: </label>
-      <input type="text" id="pokemon-name" name="pokemon_name" value="<%= pokemonInfo.name %>">
+      <input type="text" id="pokemon-name" name="pokemon_name" value="<%= pokemonInfo.name %>" maxlength="20">
       <br>
       <label for="type">Type: </label>
       <select name="type" id="type">
@@ -17,14 +18,16 @@
         <% }) %> 
       </select>
       <br>
-      <label for="attack">Attack:</label>
-      <input type="range" min="10" max="150" value="<%= pokemonInfo.attack %>" name="attack" id="attack" oninput="this.nextElementSibling.value = this.value">
-      <output id="attack-value" class="value"><%= pokemonInfo.attack %></output>
-      <br>
-      <label for="defense">Defense:</label>
-      <input type="range" min="10" max="150" value="<%= pokemonInfo.defense %>" name="defense" id="defense" oninput="this.nextElementSibling.value = this.value">
-      <output id="defense-value" class="value"><%= pokemonInfo.defense %></output>
-      <br>
+      <div class="attack-slider-container">  
+        <label for="attack">Attack:</label>
+        <input type="range" min="10" max="150" value="<%= pokemonInfo.attack %>" name="attack" id="attack" oninput="this.nextElementSibling.value = this.value">
+        <output id="attack-value" class="value"><%= pokemonInfo.attack %></output>
+      </div>
+      <div class="defense-slider-container">
+        <label for="defense">Defense:</label>
+        <input type="range" min="10" max="150" value="<%= pokemonInfo.defense %>" name="defense" id="defense" oninput="this.nextElementSibling.value = this.value">
+        <output id="defense-value" class="value"><%= pokemonInfo.defense %></output>
+      </div>
       <button type="submit">Submit</button>
     </form>
   </body>

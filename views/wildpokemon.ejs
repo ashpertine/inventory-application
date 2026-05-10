@@ -4,25 +4,94 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Wild Pokemon</title>
+    <link rel="stylesheet" href="/wildpokemon.css">
   </head>
   <body> 
     <div class="pokemon-card-container">
+      <% if(wildPokemon.length === 0) { %>
+        <h1>No wild pokemon here!</h1>
+      <% } %>
       <% wildPokemon.map(singlePokemon => { %>
         <div class="card">  
-          <p><strong>Pokemon Name</strong>: <%= singlePokemon.name %></p>
-          <p>Type: <%= singlePokemon.type_name %></p>
-          <p>Attack: <%= singlePokemon.attack %></p>
-          <p>Defense: <%= singlePokemon.defense %></p>
-          <a href="/pokemon/<%= singlePokemon.pokemon_id %>/update">Update Pokemon</a>
-          <button command="show-modal" commandfor="delete-pokemon-<%= singlePokemon.pokemon_id %>-dialog">Delete</button>
-          <dialog id="delete-pokemon-<%= singlePokemon.pokemon_id %>-dialog">
-            <button commandfor="delete-pokemon-<%= singlePokemon.pokemon_id %>-dialog" command="close">Close</button>
-            <form action="/pokemon/<%= singlePokemon.pokemon_id %>/delete" method="POST">
-              <p>Are you sure you want to delete this Pokemon with ID of <%= singlePokemon.pokemon_id %>?</p>
-              <button type="submit">Confirm</button>
-            </form>
-          </dialog>
+          <div class="info-container">
+            <div class="stats-container">    
+              <p>Pokemon Name: <%= singlePokemon.name %></p>
+              <p>Type: <%= singlePokemon.type_name %></p>
+              <p>Attack: <%= singlePokemon.attack %></p>
+              <p>Defense: <%= singlePokemon.defense %></p>
+            </div>
+            <div class="pokemon-img-container" id="pokemon-<%= singlePokemon.name %>-<%= singlePokemon.pokemon_id %>-img-container">
+              <img src="" alt="Image of pokemon" id="pokemon-<%= singlePokemon.name %>-<%= singlePokemon.pokemon_id %>-img">
+            </div>
+          </div> 
+          <div class="buttons-container">
+          <% if(trainerIdForCatch) { %>
+          <button command="show-modal" commandfor="catch-pokemon-<%= trainerIdForCatch %>-<%= singlePokemon.pokemon_id %>-dialog">Catch!</button>
+            <dialog id="catch-pokemon-<%= trainerIdForCatch %>-<%= singlePokemon.pokemon_id %>-dialog">
+              <button commandfor="catch-pokemon-<%= trainerIdForCatch %>-<%= singlePokemon.pokemon_id %>-dialog" command="close">Close</button>
+                <form action="/pokemon/wild/<%= trainerIdForCatch %>/catch/<%= singlePokemon.pokemon_id %>" method="POST">
+                <p>Are you sure you want to catch this Pokemon with ID of <%= singlePokemon.pokemon_id %>?</p>
+                <button type="submit">Yes</button>
+              </form>
+            </dialog>
+            <% }else {%>
+            <a href="/pokemon/<%= singlePokemon.pokemon_id %>/update">Update Pokemon</a>
+            <button command="show-modal" commandfor="delete-pokemon-<%= singlePokemon.pokemon_id %>-dialog">Delete</button>
+            <dialog id="delete-pokemon-<%= singlePokemon.pokemon_id %>-dialog">
+              <button commandfor="delete-pokemon-<%= singlePokemon.pokemon_id %>-dialog" command="close">Close</button>
+              <form action="/pokemon/<%= singlePokemon.pokemon_id %>/delete" method="POST">
+                <p>Are you sure you want to delete this Pokemon with ID of <%= singlePokemon.pokemon_id %>?</p>
+                <button type="submit">Confirm</button>
+              </form>
+            </dialog>
+          <% } %>
+          </div>
         </div>
       <% }) %>
   </body>
 </html>
+<script type='text/javascript'>
+
+const getPokemonImage = async (pokemon_name) => {
+  const normalised = pokemon_name.trim().toLowerCase();
+  try {
+    const results = await fetch(`https://pokeapi.co/api/v2/pokemon/${normalised}`, {
+      method: "GET",
+    })
+
+    if(!results.ok) {
+      return null;
+    }
+    const data = await results.json();
+    const frontDefImageUrl = data.sprites.front_default;
+    return frontDefImageUrl;
+
+  }catch(error) {
+    return null;
+  }
+}
+
+(async () => {
+  const pokemons = <%- JSON.stringify(wildPokemon) %>;
+  await Promise.all(
+    pokemons.map(async (pokemon) => {
+      const pokemonImgContainer = document.querySelector(`#pokemon-${pokemon.name}-${pokemon.pokemon_id}-img-container`);
+      const pokemonImgTag = document.querySelector(`#pokemon-${pokemon.name}-${pokemon.pokemon_id}-img`);
+      const pokemonImgUrl = await getPokemonImage(pokemon.name);
+      
+      if(pokemonImgUrl) {
+        pokemonImgTag.src = pokemonImgUrl;
+      }else {
+        pokemonImgContainer.removeChild(pokemonImgContainer.children[0]);
+        pokemonImgContainer.classList.remove('pokemon-img-container');
+        pokemonImgContainer.classList.add('no-photo-container');
+        const noPhotoDiv = document.createElement('div');
+        noPhotoDiv.id = "no-photo";
+        noPhotoDiv.innerText = "No photo found!"
+        pokemonImgContainer.append(noPhotoDiv);
+      }
+    })
+  )
+})();
+</script>
+
